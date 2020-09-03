@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+    <metadata>
+        $CommonMetadataElements$
+        <dependencies>
+            <dependency id="THNETII.RepositoryDefault.Dotnet.Build" version="$THNETIIRespositoryDefaultDotnetBuildDependencyVersion$"/>
+            <dependency id="Microsoft.SourceLink.GitHub" version="$MicrosoftSourceLinkGitHubDependencyVersion$"/>
+        </dependencies>
+    </metadata>
+    <files>
+        $CommonFileElements$
+        <file src="$ProjectDirectory$\..\..\LICENSE" target="LICENSE" />
+        <file src="$ProjectDirectory$\build\*.*" target="build" />
+        <file src="$ProjectDirectory$\buildMultiTargeting\*.*" target="buildMultiTargeting" />
+    </files>
+</package>

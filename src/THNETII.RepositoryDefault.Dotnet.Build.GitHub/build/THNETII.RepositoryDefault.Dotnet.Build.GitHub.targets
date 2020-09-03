@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+  <PropertyGroup>
+    <GenerateNuspecDependsOn>InferProjectUrlFromGitHubRepositoryUrl;$(GenerateNuspecDependsOn)</GenerateNuspecDependsOn>
+  </PropertyGroup>
+
+  <Target Name="InferProjectUrlFromGitHubRepositoryUrl"
+          DependsOnTargets="InitializeSourceControlInformation"
+          Condition="'$(SourceControlInformationFeatureSupported)' == 'true'">
+    <PropertyGroup Condition="
+                    '$(RepositoryUrl)' == '' and
+                    '$(PublishRepositoryUrl)' == 'true'
+                   ">
+      <PackageProjectUrl Condition=" $(PrivateRepositoryUrl.EndsWith('.git'))">$(PrivateRepositoryUrl.Substring(0, $(PrivateRepositoryUrl.LastIndexOf('.git'))))</PackageProjectUrl>
+      <PackageProjectUrl Condition="!$(PrivateRepositoryUrl.EndsWith('.git'))">$(PrivateRepositoryUrl)</PackageProjectUrl>
+    </PropertyGroup>
+  </Target>
+
+</Project>

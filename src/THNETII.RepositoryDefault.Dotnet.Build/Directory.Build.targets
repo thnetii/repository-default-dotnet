@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <Import Project="$(MSBuildThisFileDiretory)..\..\Directory.Build.targets"/>
+  <Import Project="$(MSBuildThisFileDiretory)..\THNETII.RepositoryDefault.Dotnet.Build\build\THNETII.RepositoryDefault.Dotnet.Build.targets"/>
+  <Import Project="$(MSBuildThisFileDiretory)..\THNETII.RepositoryDefault.Dotnet.Build.GitHub\build\THNETII.RepositoryDefault.Dotnet.Build.GitHub.targets"/>
+
+  <Target Name="InitializeRepositoryDefaultNuspecProperties"
+          BeforeTargets="GenerateNuspec"
+          AfterTargets="InitializeStandardNuspecProperties">
+    <PropertyGroup>
+      <_MicrosoftBuildTasksGitDependencyVersion>@(PackageReference->WithMetadataValue('Identity', 'Microsoft.Build.Tasks.Git')->Metadata('Version'))</_MicrosoftBuildTasksGitDependencyVersion>
+      <_MicrosoftCodeAnalysisFxCopAnalyzersDependencyVersion>@(PackageReference->WithMetadataValue('Identity', 'Microsoft.CodeAnalysis.FxCopAnalyzers')->Metadata('Version'))</_MicrosoftCodeAnalysisFxCopAnalyzersDependencyVersion>
+      <_NullableDependencyVersion>@(PackageReference->WithMetadataValue('Identity', 'Nullable')->Metadata('Version'))</_NullableDependencyVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+      <NuspecProperties>$(NuspecProperties);MicrosoftBuildTasksGitDependencyVersion=$(_MicrosoftBuildTasksGitDependencyVersion);MicrosoftCodeAnalysisFxCopAnalyzersDependencyVersion=$(_MicrosoftCodeAnalysisFxCopAnalyzersDependencyVersion);NullableDependencyVersion=$(_NullableDependencyVersion)</NuspecProperties>
+    </PropertyGroup>
+  </Target>
+</Project>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <Import Project="$(MSBuildThisFileDiretory)..\..\Directory.Build.props"/>
+  <Import Project="$(MSBuildThisFileDiretory)..\THNETII.RepositoryDefault.Dotnet.Build\build\THNETII.RepositoryDefault.Dotnet.Build.props"/>
+  <Import Project="$(MSBuildThisFileDiretory)..\THNETII.RepositoryDefault.Dotnet.Build.GitHub\build\THNETII.RepositoryDefault.Dotnet.Build.GitHub.props"/>
+</Project>

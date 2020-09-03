@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <Import Project="$(MSBuildThisFileDiretory)..\..\Directory.Build.targets"/>
+  <Import Project="$(MSBuildThisFileDiretory)..\THNETII.RepositoryDefault.Dotnet.Build\build\THNETII.RepositoryDefault.Dotnet.Build.targets"/>
+  <Import Project="$(MSBuildThisFileDiretory)..\THNETII.RepositoryDefault.Dotnet.Build.GitHub\build\THNETII.RepositoryDefault.Dotnet.Build.GitHub.targets"/>
+
+  <Target Name="InitializeRepositoryDefaultNuspecProperties"
+          BeforeTargets="GenerateNuspec"
+          AfterTargets="InitializeStandardNuspecProperties">
+    <PropertyGroup>
+      <_THNETIIRespositoryDefaultDotnetBuildDependencyVersion Condition=" $(InformationalVersion.Contains('+'))">$(InformationalVersion.Substring(0, $(InformationalVersion.IndexOf('+'))))</_THNETIIRespositoryDefaultDotnetBuildDependencyVersion>
+      <_THNETIIRespositoryDefaultDotnetBuildDependencyVersion Condition="!$(InformationalVersion.Contains('+'))">$(InformationalVersion)</_THNETIIRespositoryDefaultDotnetBuildDependencyVersion>
+      <_MicrosoftSourceLinkGitHubDependencyVersion>@(PackageReference->WithMetadataValue('Identity', 'Microsoft.SourceLink.GitHub')->Metadata('Version'))</_MicrosoftSourceLinkGitHubDependencyVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+      <NuspecProperties>$(NuspecProperties);THNETIIRespositoryDefaultDotnetBuildDependencyVersion=$(_THNETIIRespositoryDefaultDotnetBuildDependencyVersion);MicrosoftSourceLinkGitHubDependencyVersion=$(_MicrosoftSourceLinkGitHubDependencyVersion)</NuspecProperties>
+    </PropertyGroup>
+  </Target>
+</Project>
