@@ -1,4 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Adopted from Microsoft.DotNet.Arcade.Sdk
+  Licensed by .NET Foundation and Contributors under MIT License
+  See https://github.com/dotnet/arcade/blob/master/LICENSE.TXT for license information
+  Original source:
+  https://github.com/dotnet/arcade/blob/4873d157a8f34f8cc7e28b3f9938b32c642ef542/src/Microsoft.DotNet.Arcade.Sdk/tools/Workarounds.targets#L63-L166
+-->
 <Project>
   <Target Name="InitializeStandardNuspecProperties"
           BeforeTargets="GenerateNuspec"
