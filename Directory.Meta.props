@@ -7,13 +7,4 @@
     <Company>TH-NETII Rasch Solutions</Company>
     <Copyright>Written by Fredrik Høisæther Rasch, $([System.DateTime]::Now.Year)</Copyright>
   </PropertyGroup>
-  <!--<PropertyGroup Label="License">
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-  </PropertyGroup>
-  <ItemGroup Label="License">
-    <None Include="$(MSBuildThisFileDirectory)LICENSE" Pack="true">
-      <PackagePath>
-      </PackagePath>
-    </None>
-  </ItemGroup>-->
 </Project>
