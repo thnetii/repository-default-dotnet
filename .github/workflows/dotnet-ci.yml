@@ -23,10 +23,10 @@ jobs:
           - configuration: debug
             configuration.argument: Debug
             configuration.display: Debug
+            pack.skip: 'true'
           - configuration: release
             configuration.argument: Release
             configuration.display: Release
-            pack.skip: true
           - runtime: agnostic
             os: ubuntu-latest
     name: ${{ matrix['configuration.display'] }} ${{ matrix['runtime.display'] }} ${{ matrix['targetFramework.display'] }}
@@ -48,7 +48,7 @@ jobs:
         uses: actions/upload-artifact@v2
         if: ${{ matrix['pack.skip'] != 'true' }}
         with:
-          name: gh-actions-run${{ github.run_id }}-nuget-${{ matrix['configuration'] }}
+          name: ${{ github.repository_owner }}-${{ github.event.repository.name }}-run${{ github.run_id }}-nuget-${{ matrix['configuration'] }}
           path: |
             ${{ github.workspace }}/bin/*/${{ matrix['configuration.argument'] }}/*.nupkg
             ${{ github.workspace }}/bin/*/${{ matrix['configuration.argument'] }}/*.snupkg
