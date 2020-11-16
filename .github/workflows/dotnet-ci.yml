@@ -1,0 +1,54 @@
+name: .NET Continuous Integration
+
+on:
+  - pull_request
+  - push
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  dotnet:
+    strategy:
+      matrix:
+        configuration:
+          - debug
+          - release
+        runtime:
+          - agnostic
+        targetFramework:
+          - project
+        include:
+          - configuration: debug
+            configuration.argument: Debug
+            configuration.display: Debug
+          - configuration: release
+            configuration.argument: Release
+            configuration.display: Release
+            pack.skip: true
+          - runtime: agnostic
+            os: ubuntu-latest
+    name: ${{ matrix['configuration.display'] }} ${{ matrix['runtime.display'] }} ${{ matrix['targetFramework.display'] }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Chekout ${{ github.repository }}@${{ github.ref }}
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: .NET SDK Version Information
+        run: |
+          dotnet --info
+          dotnet msbuild -version
+      - name: dotnet restore
+        run: dotnet restore
+      - name: dotnet build
+        run: dotnet build --configuration ${{ matrix['configuration.argument'] }}
+      - name: Upload nuget packages
+        uses: actions/upload-artifact@v2
+        if: ${{ matrix['pack.skip'] != 'true' }}
+        with:
+          name: gh-actions-run${{ github.run_id }}-nuget-${{ matrix['configuration'] }}
+          path: |
+            ${{ github.workspace }}/bin/*/${{ matrix['configuration.argument'] }}/*.nupkg
+            ${{ github.workspace }}/bin/*/${{ matrix['configuration.argument'] }}/*.snupkg
