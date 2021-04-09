@@ -1,5 +1,93 @@
 <Project>
 
-  
+  <Target Name="InitializePublishDirFromSourceControlManager"
+          DependsOnTargets="InitializeSourceControlInformation"
+          BeforeTargets="PrepareForPublish">
+    <ItemGroup>
+      <_SourceRootReverseOrder Include="@(SourceRoot->HasMetadata('SourceControl')->Reverse())" />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <PublishDir>%(_SourceRootReverseOrder.Identity)publish\$(MSBuildProjectName)\</PublishDir>
+    </PropertyGroup>
+
+    <PropertyGroup>
+      <PublishDir>$(PublishDir)$(Configuration)\</PublishDir>
+      <PublishDir Condition=" '$(PlatformName)' != '' and '$(PlatformName)' != 'AnyCPU' "
+        >$(PublishDir)$(PlatformName)\</PublishDir>
+      <PublishDir Condition=" '$(TargetFramework)' != '' "
+        >$(PublishDir)$(TargetFramework)\</PublishDir>
+      <PublishDir Condition=" '$(RuntimeIdentifier)' != '' "
+        >$(PublishDir)$(RuntimeIdentifier)\</PublishDir>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="AddBuildIdToInformationalVersion"
+          Condition=" '$(BuildId)' != ''"
+          DependsOnTargets="GetAssemblyVersion"
+          BeforeTargets="AddSourceRevisionToInformationalVersion"
+          >
+    <PropertyGroup Condition="!(
+                    '$(Configuration)' == 'Release' AND (
+                      $(BuildSourceBranch.StartsWith('refs/heads/releases/')) OR
+                      $(BuildSourceBranch.StartsWith('releases/'))
+                    ))">
+      <!-- Follow SemVer 2.0 rules -->
+      <_InformationalVersionContainsHyphen>false</_InformationalVersionContainsHyphen>
+      <_InformationalVersionContainsHyphen Condition="$(InformationalVersion.Contains('-'))">true</_InformationalVersionContainsHyphen>
+
+      <InformationalVersion Condition="!$(_InformationalVersionContainsHyphen)">$(InformationalVersion)-build$(BuildId)</InformationalVersion>
+      <InformationalVersion Condition="$(_InformationalVersionContainsHyphen)">$(InformationalVersion).build$(BuildId)</InformationalVersion>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="SetPackageVersionToInformationalVersion"
+          Condition=" '$(BuildId)' != ''"
+          DependsOnTargets="AddBuildIdToInformationalVersion"
+          BeforeTargets="AddSourceRevisionToInformationalVersion"
+          >
+    <PropertyGroup>
+      <PackageVersion>$(InformationalVersion)</PackageVersion>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="SetPackageVersionToVersionWithBuildId"
+          Condition=" '$(BuildId)' != ''"
+          BeforeTargets="GenerateNuspec"
+          >
+    <PropertyGroup Condition="!(
+                    '$(Configuration)' == 'Release' AND (
+                      $(BuildSourceBranch.StartsWith('refs/heads/releases/')) OR
+                      $(BuildSourceBranch.StartsWith('releases/'))
+                    ))">
+      <!-- Follow SemVer 2.0 rules -->
+      <_VersionContainsHyphen>false</_VersionContainsHyphen>
+      <_VersionContainsHyphen Condition="$(Version.Contains('-'))">true</_VersionContainsHyphen>
+
+      <PackageVersion Condition="!$(_VersionContainsHyphen)">$(Version)-build$(BuildId)</PackageVersion>
+      <PackageVersion Condition="$(_VersionContainsHyphen)">$(Version).build$(BuildId)</PackageVersion>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="AddSourceRootLicenseFileToNugetPackageOutput"
+          DependsOnTargets="InitializeSourceControlInformation"
+          BeforeTargets="_GetPackageFiles;GenerateNuspec"
+          >
+    <ItemGroup>
+      <_SourceRootReverseOrder Include="@(SourceRoot->HasMetadata('SourceControl')->Reverse())" />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <_SourceRootLicenseFilePath>%(_SourceRootReverseOrder.Identity)LICENSE</_SourceRootLicenseFilePath>
+    </PropertyGroup>
+    <PropertyGroup Condition="Exists('$(_SourceRootLicenseFilePath)')">
+      <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    </PropertyGroup>
+    <ItemGroup Condition="Exists('$(_SourceRootLicenseFilePath)')">
+      <None Include="$(_SourceRootLicenseFilePath)" Pack="true">
+        <PackagePath></PackagePath>
+      </None>
+    </ItemGroup>
+  </Target>
 
 </Project>

@@ -1,4 +1,4 @@
-<Project>
+<Project TreatAsLocalProperty="DirectoryMetaPropsFilePath">
 
   <PropertyGroup>
     <LangVersion>9</LangVersion>
@@ -7,5 +7,13 @@
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <DebugType Condition=" '$(DebugType)' == '' ">portable</DebugType>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <DirectoryMetaPropsFilePath>$([MSBuild]::GetDirectoryNameOfFileAbove('$(MSBuildProjectDirectory)', 'Directory.Meta.props'))\Directory.Meta.props</DirectoryMetaPropsFilePath>
+  </PropertyGroup>
+
+  <Import Label="Directory.Meta.props"
+          Condition="Exists('$(DirectoryMetaPropsFilePath)')"
+          Project="$(DirectoryMetaPropsFilePath)" />
 
 </Project>
