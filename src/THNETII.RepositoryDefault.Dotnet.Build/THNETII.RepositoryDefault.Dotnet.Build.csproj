@@ -4,7 +4,7 @@
     <TargetFramework>netstandard1.0</TargetFramework>
     <DevelopmentDependency>true</DevelopmentDependency>
     <VersionPrefix>0.0.1</VersionPrefix>
-    <VersionSuffix>preview1</VersionSuffix>
+    <VersionSuffix>preview2</VersionSuffix>
   </PropertyGroup>
 
   <PropertyGroup>
