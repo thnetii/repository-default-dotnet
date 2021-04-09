@@ -33,7 +33,7 @@
         <xsl:stylesheet version="1.0"
           xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
           xmlns:ns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd" >
-          <!--empty template suppresses this attribute-->
+          <!--empty template suppresses match-->
           <xsl:template match="/ns:package/ns:metadata/ns:dependencies/ns:group/@targetFramework" />
           <!--identity template copies everything forward by default-->
           <xsl:template match="@*|node()">
@@ -60,69 +60,6 @@
       <!-- Cleanup intermeditate items  -->
       <_IntermediateTfmAgnosticNuspec Remove="@(_IntermediateTfmAgnosticNuspec)" />
     </ItemGroup>
-  </Target>
-
-  <Target Name="GetProjectReferencePackageInformation">
-
-    <MSBuild Projects="@(ProjectReference)"
-      Targets="GetPackageIdWithVersion"
-      SkipNonexistentTargets="true">
-      <Output TaskParameter="TargetOutputs" ItemName="_ProjectReferencePackageInformation" />
-    </MSBuild>
-
-  </Target>
-
-  <Target Name="AddProjectReferencePackageDependencyToNuspec"
-          Condition="'$(NuspecFile)'==''"
-          AfterTargets="StripTfmFromGeneratedNuspec"
-          DependsOnTargets="GetProjectReferencePackageInformation"
-          Inputs="@(_ProjectReferencePackageInformation)"
-          Outputs="@(_TfmAgnosticNuspec)">
-
-    <ItemGroup>
-      <_IntermediatePackageRefenceDepsNuspec Include="@(_TfmAgnosticNuspec->'$(IntermediateOutputPath)%(Filename).int.nuspec')" />
-    </ItemGroup>
-
-    <PropertyGroup>
-      <_ProjectReferenceAdditionalNuspecDependencies>
-        @(_ProjectReferencePackageInformation->'&lt;ns:dependency id=&quot;%(Identity)&quot; version=&quot;%(Version)&quot; include=&quot;all&quot; /&gt;', '')
-      </_ProjectReferenceAdditionalNuspecDependencies>
-    </PropertyGroup>
-
-    <PropertyGroup>
-      <_ProjectReferenceAddAdditionalNuspecDependenciesXsl>
-        <xsl:stylesheet version="1.0"
-          xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-          xmlns:ns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd" >
-          <!-- Identity transform -->
-          <xsl:template match="@* | node()">
-            <xsl:copy>
-              <xsl:apply-templates select="@* | node()"/>
-            </xsl:copy>
-          </xsl:template>
-
-          <xsl:template match="/ns:package/ns:metadata/ns:dependencies/ns:group/ns:dependency[last()]">
-            <xsl:copy-of select="." />
-            $(_ProjectReferenceAdditionalNuspecDependencies)
-          </xsl:template>
-        </xsl:stylesheet>
-      </_ProjectReferenceAddAdditionalNuspecDependenciesXsl>
-    </PropertyGroup>
-
-    <XslTransformation
-      XmlInputPaths="@(_TfmAgnosticNuspec)"
-      OutputPaths="@(_IntermediatePackageRefenceDepsNuspec)"
-      XslContent="$(_ProjectReferenceAddAdditionalNuspecDependenciesXsl)" />
-
-    <Move
-      SourceFiles="@(_IntermediatePackageRefenceDepsNuspec)"
-      DestinationFiles="@(_TfmAgnosticNuspec)" />
-
-    <ItemGroup>
-      <!-- Cleanup intermeditate items  -->
-      <_IntermediatePackageRefenceDepsNuspec Remove="@(_IntermediatePackageRefenceDepsNuspec)" />
-    </ItemGroup>
-
   </Target>
 
   <Target Name="AddProjectBuildFilesToNuspec"
@@ -208,7 +145,7 @@
 
   <Target Name="PackUsingFixedNuspec"
           Condition="'$(NuspecFile)'==''"
-          DependsOnTargets="_CalculateInputsOutputsForPack;StripTfmFromGeneratedNuspec;AddProjectReferencePackageDependencyToNuspec;AddProjectBuildFilesToNuspec"
+          DependsOnTargets="_CalculateInputsOutputsForPack;StripTfmFromGeneratedNuspec;AddProjectBuildFilesToNuspec"
           AfterTargets="Build"
           Inputs="@(_TfmAgnosticNuspec)"
           Outputs="@(NuGetPackOutput->WithMetadataValue('Extension', '.nupkg'))">
