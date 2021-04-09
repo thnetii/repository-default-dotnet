@@ -34,15 +34,15 @@ jobs:
           skip-duplicate: true
   azure_devops_packaging:
     name: Publish to Azure DevOps artifacts
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Prepare .NET NuGet Push action
         uses: thnetii/gh-actions/def/typescript-action-prepare@main
         with:
           action-name: dotnet-nuget-push
       - name: dotnet nuget add source azure-devops
-        shell: cmd
-        run: dotnet nuget add source https://pkgs.dev.azure.com/thnetii/artifacts/_packaging/public/nuget/v3/index.json --name azure-devops --username x-access-token --password ${{ secrets.AZURE_DEVOPS_PACKAGING_READWRITE_ACCESS_TOKEN }} --valid-authentication-types basic
+        shell: bash
+        run: dotnet nuget add source https://pkgs.dev.azure.com/thnetii/artifacts/_packaging/public/nuget/v3/index.json --name azure-devops --username x-access-token --password ${{ secrets.AZURE_DEVOPS_PACKAGING_READWRITE_ACCESS_TOKEN }} --valid-authentication-types basic --store-password-in-clear-text
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -59,3 +59,7 @@ jobs:
           source: azure-devops
           api-key: ${{ github.sha }}
           skip-duplicate: true
+      - name: dotnet nuget remove source azure-devops
+        if: ${{ always() }}
+        shell: bash
+        run: dotnet nuget remove source azure-devops
