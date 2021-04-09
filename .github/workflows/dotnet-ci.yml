@@ -16,25 +16,14 @@ jobs:
     strategy:
       matrix:
         configuration:
-          - debug
           - release
         runtime:
           - agnostic
-        exclude:
-          - configuration: debug
-            runtime: windows
-          - configuration: debug
-            runtime: linux
-          - configuration: debug
-            runtime: macos
         include:
           - msbuild.arguments: |
               -property:BuildId=${{ github.run_number }}
               -property:BuildSourceBranch=${{ github.ref }}
               -consoleLoggerParameters:NoSummary
-          - configuration: debug
-            configuration.id: Debug
-            configuration.display: Debug
           - configuration: release
             configuration.id: Release
             configuration.display: Release
