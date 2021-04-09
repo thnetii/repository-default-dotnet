@@ -1,0 +1,76 @@
+<Project Sdk="Microsoft.Build.NoTargets/3.0.4">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.0</TargetFramework>
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <VersionPrefix>0.0.1</VersionPrefix>
+    <VersionSuffix>preview1</VersionSuffix>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <IncludeSymbols>false</IncludeSymbols>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Update="*">
+      <PrivateAssets>none</PrivateAssets>
+      <IncludeAssets>all</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <Target Name="CallGenerateNuspecAndFixupNuspecBeforePack"
+    AfterTargets="Build"
+    DependsOnTargets="_CalculateInputsOutputsForPack"
+    Outputs="@(NuGetPackOutput->WithMetadataValue('Extension', '.nuspec'))">
+    <CallTarget Targets="GenerateNuspec" />
+
+    <ItemGroup>
+      <_PreGeneratedNuspec Include="@(NuGetPackOutput->WithMetadataValue('Extension', '.nuspec'))" Condition="Exists('%(FullPath)')" />
+      <_IntermediateNuspec Include="@(_PreGeneratedNuspec->'$(IntermediateOutputPath)%(Filename).int.nuspec')" />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <_NuspecNamespaceDeclarations>
+        <Namespace Prefix="ns" Uri="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd" />
+      </_NuspecNamespaceDeclarations>
+    </PropertyGroup>
+
+    <XmlPeek XmlInputPath="@(_PreGeneratedNuspec)"
+      Query="/ns:package/ns:metadata/ns:dependencies/ns:group/@targetFramework"
+      Namespaces="$(_NuspecNamespaceDeclarations)">
+      <Output TaskParameter="Result" ItemName="_GeneratedNuspecTargetFramework" />
+    </XmlPeek>
+
+    <PropertyGroup>
+      <_NuspecStripTargetFrameworkXsl>
+        <xsl:stylesheet version="1.0"
+          xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+          xmlns:ns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd" >
+          <!--empty template suppresses this attribute-->
+          <xsl:template match="/ns:package/ns:metadata/ns:dependencies/ns:group/@targetFramework" />
+          <!--identity template copies everything forward by default-->
+          <xsl:template match="@*|node()">
+              <xsl:copy>
+                  <xsl:apply-templates select="@*|node()"/>
+              </xsl:copy>
+          </xsl:template>
+        </xsl:stylesheet>
+      </_NuspecStripTargetFrameworkXsl>
+    </PropertyGroup>
+
+    <XslTransformation
+      XmlInputPaths="@(_PreGeneratedNuspec)"
+      OutputPaths="@(_IntermediateNuspec)"
+      XslContent="$(_NuspecStripTargetFrameworkXsl)" />
+
+    <Move
+      SourceFiles="@(_IntermediateNuspec)"
+      DestinationFiles="@(_PreGeneratedNuspec)">
+      <Output TaskParameter="MovedFiles" ItemName="_FixedNuspec" />
+    </Move>
+  </Target>
+
+</Project>
