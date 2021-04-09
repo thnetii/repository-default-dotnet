@@ -8,6 +8,16 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <Description>.NET build support package for repositories under Git version control.
+
+Configures the following build behaviour (in addition to the behaviour imported by dependencies):
+* Enables SourceLink and emits a symbol package on Pack
+* Adds target that infers an appropriate publish output directory relative to the repository root.
+* Adds target to add the BuildId property (if configured) to the InformationalVersion before the git commit is added. (Not if the branch name in CI is prefixed with releases/ )
+* Adds target that automatically includes the LICENSE file from the repository root into the generated NuGet package.</Description>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <IncludeSymbols>false</IncludeSymbols>

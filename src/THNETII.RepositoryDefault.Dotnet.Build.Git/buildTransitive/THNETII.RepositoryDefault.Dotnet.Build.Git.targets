@@ -15,9 +15,9 @@
       <PublishDir>$(PublishDir)$(Configuration)\</PublishDir>
       <PublishDir Condition=" '$(PlatformName)' != '' and '$(PlatformName)' != 'AnyCPU' "
         >$(PublishDir)$(PlatformName)\</PublishDir>
-      <PublishDir Condition=" '$(TargetFramework)' != '' "
+      <PublishDir Condition=" '$(TargetFramework)' != '' and $(AppendTargetFrameworkToOutputPath)"
         >$(PublishDir)$(TargetFramework)\</PublishDir>
-      <PublishDir Condition=" '$(RuntimeIdentifier)' != '' "
+      <PublishDir Condition=" '$(RuntimeIdentifier)' != '' and $(AppendRuntimeIdentifierToOutputPath) "
         >$(PublishDir)$(RuntimeIdentifier)\</PublishDir>
     </PropertyGroup>
   </Target>

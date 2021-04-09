@@ -8,6 +8,14 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <Description>.NET build support package for repositories under Git version control.
+
+Configures the following build behaviour (in addition to the behaviour imported by dependencies):
+* Adds target to infer the GitHub project URL from source control and include as metadata in generated NuGet package.</Description>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <IncludeSymbols>false</IncludeSymbols>

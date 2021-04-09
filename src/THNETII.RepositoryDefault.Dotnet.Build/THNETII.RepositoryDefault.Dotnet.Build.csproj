@@ -8,6 +8,18 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <Description>.NET build support package.
+
+Configures the following build behaviour:
+* Set C# language version to C# 9
+* Enable Nullable Reference types.
+  Uses the Nullable NuGet package to back-reference NRT annotation attributes for older .NET TFMs
+* Generates portable PDB-files for debugging in Debug configuration.
+* Add targets that trims the FileVersion assembly attribute to a 3-component version number
+* Add targets that trims the AssemblyVersion assembly attribute to a 3-component version number and adds the BuildId property (if configured) as the 4th version component.</Description>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <IncludeSymbols>false</IncludeSymbols>
