@@ -24,8 +24,9 @@ Configures the following build behaviour (in addition to the behaviour imported 
 
   <ItemGroup>
     <ProjectReference Include="..\THNETII.RepositoryDefault.Dotnet.Build\THNETII.RepositoryDefault.Dotnet.Build.csproj" />
-    <PackageReference Include="Microsoft.Build.Tasks.Git">
-      <Version>1.0.0</Version>
+    <PackageReference Include="Microsoft.Build.Tasks.Git" Version="1.0.0">
+      <PrivateAssets>none</PrivateAssets>
+      <IncludeAssets>all</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
       <PrivateAssets>all</PrivateAssets>

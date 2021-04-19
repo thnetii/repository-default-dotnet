@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
 
-  <Import Project="$(MSBuildThisFileDirectory)src\THNETII.RepositoryDefault.Dotnet.Build\buildTransitive\THNETII.RepositoryDefault.Dotnet.Build.targets" />
-  <Import Project="$(MSBuildThisFileDirectory)src\THNETII.RepositoryDefault.Dotnet.Build.Git\buildTransitive\THNETII.RepositoryDefault.Dotnet.Build.Git.targets" />
-  <Import Project="$(MSBuildThisFileDirectory)src\THNETII.RepositoryDefault.Dotnet.Build.GitHub\buildTransitive\THNETII.RepositoryDefault.Dotnet.Build.GitHub.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)src\THNETII.RepositoryDefault.Dotnet.Build\build\THNETII.RepositoryDefault.Dotnet.Build.targets" />
+  <!-- <Import Project="$(MSBuildThisFileDirectory)src\THNETII.RepositoryDefault.Dotnet.Build.Git\build\THNETII.RepositoryDefault.Dotnet.Build.Git.targets" /> -->
+  <Import Project="$(MSBuildThisFileDirectory)src\THNETII.RepositoryDefault.Dotnet.Build.GitHub\build\THNETII.RepositoryDefault.Dotnet.Build.GitHub.targets" />
 
   <Target Name="GetPackageIdWithVersion"
     Outputs="@(PackageInformationItem)">
@@ -133,8 +133,8 @@
     <PropertyGroup>
       <_ProjectBuildFilesAdditionalNuspecFileReferences>
         <ns:file src="$(MSBuildProjectDirectory)\build\*.*" target="build" xmlns:ns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd" />
-        <ns:file src="$(MSBuildProjectDirectory)\build\*.*" target="buildMultiTargeting" xmlns:ns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd" />
-        <ns:file src="$(MSBuildProjectDirectory)\buildTransitive\*.*" target="buildTransitive" xmlns:ns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd" />
+        <ns:file src="$(MSBuildProjectDirectory)\buildMultiTargeting\*.*" target="buildMultiTargeting" xmlns:ns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd" />
+        <ns:file src="$(MSBuildProjectDirectory)\buildMultiTargeting\*.*" target="buildTransitive" xmlns:ns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd" />
       </_ProjectBuildFilesAdditionalNuspecFileReferences>
       <_NuspecXmlNamspaceDeclarations>
         <Namespace Prefix="ns" Uri="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd" />

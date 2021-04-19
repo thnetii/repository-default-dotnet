@@ -6,8 +6,8 @@
     <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
   </PropertyGroup>
 
-  <Import Project="$(MSBuildThisFileDirectory)src\THNETII.RepositoryDefault.Dotnet.Build\buildTransitive\THNETII.RepositoryDefault.Dotnet.Build.props" />
-  <Import Project="$(MSBuildThisFileDirectory)src\THNETII.RepositoryDefault.Dotnet.Build.Git\buildTransitive\THNETII.RepositoryDefault.Dotnet.Build.Git.props" />
-  <!--<Import Project="$(MSBuildThisFileDirectory)src\THNETII.RepositoryDefault.Dotnet.Build.GitHub\buildTransitive\THNETII.RepositoryDefault.Dotnet.Build.GitHub.props" />-->
+  <Import Project="$(MSBuildThisFileDirectory)src\THNETII.RepositoryDefault.Dotnet.Build\build\THNETII.RepositoryDefault.Dotnet.Build.props" />
+  <Import Project="$(MSBuildThisFileDirectory)src\THNETII.RepositoryDefault.Dotnet.Build.Git\build\THNETII.RepositoryDefault.Dotnet.Build.Git.props" />
+  <!-- <Import Project="$(MSBuildThisFileDirectory)src\THNETII.RepositoryDefault.Dotnet.Build.GitHub\build\THNETII.RepositoryDefault.Dotnet.Build.GitHub.props" /> -->
 
 </Project>
