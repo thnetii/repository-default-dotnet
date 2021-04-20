@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+  <!--
+
+    This file is empty on purpose to avoid automatic inclusion of
+    Directory.Build.targets contained in the parent of the directory this
+    file is contained in.
+
+  -->
+
+</Project>
