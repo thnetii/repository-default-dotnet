@@ -10,15 +10,16 @@ on:
 
 jobs:
   nupkg_usage_test:
-    name: Test published nupkg
+    name: Test published nupkg (${{ matrix.display }})
     runs-on: ubuntu-latest
     strategy:
       matrix:
         source:
-          - GitHub Packages
-          - Azure DevOps
+          - github
+          - azuredevops
         include:
-          - source: GitHub Packages
+          - source: github
+            display: GitHub Packages
             nuget-configuration: |
               <?xml version="1.0" encoding="utf-8"?>
               <configuration>
@@ -33,7 +34,8 @@ jobs:
                   </github>
                 </packageSourceCredentials>
               </configuration>
-          - source: Azure DevOps
+          - source: azuredevops
+            display: Azure DevOps
             nuget-configuration: |
               <?xml version="1.0" encoding="utf-8"?>
               <configuration>
@@ -60,7 +62,7 @@ jobs:
         env:
           MATRIX_NUGET_CONFIG_CONTENT: ${{ matrix['nuget-configuration'] }}
       - name: 'Add GitHub Access Token to NuGet configuration'
-        if: matrix['source'] == 'GitHub Packages'
+        if: matrix['source'] == 'github'
         shell: pwsh
         run: |
           [xml]$NugetConfig = Get-Content ./nuget.config
@@ -78,5 +80,5 @@ jobs:
       - name: 'Upload test directory as artifact'
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ github.repository_owner }}-${{ github.event.repository.name }}-test
+          name: ${{ github.repository_owner }}-${{ github.event.repository.name }}-test-${{ matrix.source }}
           path: test
