@@ -28,7 +28,7 @@ jobs:
                 <packageSourceCredentials>
                   <github>
                     <add key="username" value="github-actions" />
-                    <add key="cleartextpassword" value="${{ secrets.GITHUB_TOKEN }}" />
+                    <add key="cleartextpassword" value="" />
                     <add key="validauthenticationtypes" value="basic" />
                   </github>
                 </packageSourceCredentials>
@@ -59,6 +59,15 @@ jobs:
           git status
         env:
           MATRIX_NUGET_CONFIG_CONTENT: ${{ matrix['nuget-configuration'] }}
+      - name: 'Add GitHub Access Token to NuGet configuration'
+        if: matrix['source'] == 'GitHub Packages'
+        shell: pwsh
+        run: |
+          [xml]$NugetConfig = Get-Content ./nuget.config
+          $PasswordNode = $NugetConfig.SelectSingleNode("/configuration/packageSourceCredentials/github/add[@key=`"cleartextpassword`"]")
+          $PasswordNode.SetAttribute("value", "${{ github.token }}")
+          $NugetConfig.Save((Resolve-Path ./nuget.config))
+        working-directory: test
       - name: 'Run .NET SDK'
         shell: pwsh
         run: |
