@@ -67,8 +67,8 @@ jobs:
         shell: pwsh
         run: |
           dotnet add package --prerelease THNETII.RepositoryDefault.Dotnet.Build.GitHub
-          dotnet build -bl:../MSBuild.Build.binlog
-          dotnet pack -bl:../MSBuild.Pack.binlog
+          dotnet build -bl:../MSBuild.Build.binlog -property:BuildId=${{ github.run_number }} -property:BuildSourceBranch=${{ github.ref }} -consoleLoggerParameters:NoSummary
+          dotnet pack -bl:../MSBuild.Pack.binlog -property:BuildId=${{ github.run_number }} -property:BuildSourceBranch=${{ github.ref }} -consoleLoggerParameters:NoSummary
           Remove-Item -Force ../nuget.config
         working-directory: test/THNETII.RepositoryDefault.Dotnet.Build.Test
       - name: 'Upload test directory as artifact'
@@ -107,8 +107,8 @@ jobs:
         shell: pwsh
         run: |
           dotnet add package --prerelease THNETII.RepositoryDefault.Dotnet.Build.GitHub
-          dotnet build -bl:../MSBuild.Build.binlog
-          dotnet pack -bl:../MSBuild.Pack.binlog
+          dotnet build -bl:../MSBuild.Build.binlog -property:BuildId=${{ github.run_number }} -property:BuildSourceBranch=${{ github.ref }} -consoleLoggerParameters:NoSummary
+          dotnet pack -bl:../MSBuild.Pack.binlog -property:BuildId=${{ github.run_number }} -property:BuildSourceBranch=${{ github.ref }} -consoleLoggerParameters:NoSummary
         working-directory: test/THNETII.RepositoryDefault.Dotnet.Build.Test
       - name: 'Upload test directory as artifact'
         if: always()
