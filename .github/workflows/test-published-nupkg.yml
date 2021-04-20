@@ -1,6 +1,7 @@
 name: .NET NuGet package test
 
 on:
+  workflow_dispatch: {}
   workflow_run:
     workflows:
       - .NET NuGet package push
