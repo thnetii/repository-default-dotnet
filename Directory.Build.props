@@ -6,6 +6,13 @@
     <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
   <Import Project="$(MSBuildThisFileDirectory)src\THNETII.RepositoryDefault.Dotnet.Build\build\THNETII.RepositoryDefault.Dotnet.Build.props" />
   <Import Project="$(MSBuildThisFileDirectory)src\THNETII.RepositoryDefault.Dotnet.Build.Git\build\THNETII.RepositoryDefault.Dotnet.Build.Git.props" />
   <!-- <Import Project="$(MSBuildThisFileDirectory)src\THNETII.RepositoryDefault.Dotnet.Build.GitHub\build\THNETII.RepositoryDefault.Dotnet.Build.GitHub.props" /> -->
