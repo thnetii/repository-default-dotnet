@@ -22,10 +22,6 @@ Configures the following build behaviour (in addition to the behaviour imported 
 
   <ItemGroup>
     <ProjectReference Include="..\THNETII.RepositoryDefault.Dotnet.Build.Git\THNETII.RepositoryDefault.Dotnet.Build.Git.csproj" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
-      <PrivateAssets>none</PrivateAssets>
-      <IncludeAssets>all</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
 </Project>
