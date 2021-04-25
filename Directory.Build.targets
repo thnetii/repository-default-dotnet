@@ -87,10 +87,19 @@
       <_ProjectReferenceAdditionalNuspecDependencies>
         @(_ProjectReferencePackageInformation->'&lt;ns:dependency id=&quot;%(Identity)&quot; version=&quot;%(Version)&quot; include=&quot;all&quot; /&gt;', '')
       </_ProjectReferenceAdditionalNuspecDependencies>
+      <_NuspecXmlNamspaceDeclarations>
+        <Namespace Prefix="ns" Uri="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd" />
+      </_NuspecXmlNamspaceDeclarations>
     </PropertyGroup>
 
+    <XmlPeek XmlInputPath="@(_TfmAgnosticNuspec->'%(FullPath)')"
+             Namespaces="$(_NuspecXmlNamspaceDeclarations)"
+             Query="/ns:package/ns:metadata/ns:dependencies/ns:group/ns:dependency">
+      <Output TaskParameter="Result" ItemName="_NuspecExistingDependencyDeclarationXmlElement" />
+    </XmlPeek>
+
     <PropertyGroup>
-      <_ProjectReferenceAddAdditionalNuspecDependenciesXsl>
+      <_ProjectReferenceAddAdditionalNuspecDependenciesXsl Condition="'@(_NuspecExistingDependencyDeclarationXmlElement)' != ''">
         <xsl:stylesheet version="1.0"
           xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
           xmlns:ns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd" >
@@ -104,6 +113,24 @@
           <xsl:template match="/ns:package/ns:metadata/ns:dependencies/ns:group/ns:dependency[last()]">
             <xsl:copy-of select="." />
             $(_ProjectReferenceAdditionalNuspecDependencies)
+          </xsl:template>
+        </xsl:stylesheet>
+      </_ProjectReferenceAddAdditionalNuspecDependenciesXsl>
+      <_ProjectReferenceAddAdditionalNuspecDependenciesXsl Condition="'@(_NuspecExistingDependencyDeclarationXmlElement)' == ''">
+        <xsl:stylesheet version="1.0"
+          xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+          xmlns:ns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd" >
+          <!-- Identity transform -->
+          <xsl:template match="@* | node()">
+            <xsl:copy>
+              <xsl:apply-templates select="@* | node()"/>
+            </xsl:copy>
+          </xsl:template>
+
+          <xsl:template match="/ns:package/ns:metadata/ns:dependencies/ns:group">
+            <ns:group>
+              $(_ProjectReferenceAdditionalNuspecDependencies)
+            </ns:group>
           </xsl:template>
         </xsl:stylesheet>
       </_ProjectReferenceAddAdditionalNuspecDependenciesXsl>
