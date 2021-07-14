@@ -38,13 +38,13 @@ jobs:
         with:
           submodules: recursive
       - name: Prepare .NET SDK action
-        uses: thnetii/gh-actions/def/typescript-action-prepare@main
+        uses: thnetii/gh-actions/typescript-action-prepare@main
         with:
           action-name: dotnet-sdk
       - name: .NET Version Information
-        uses: thnetii/gh-actions/def/dotnet-version-info@main
+        uses: thnetii/gh-actions/dotnet-version-info@main
       - name: dotnet restore
-        uses: thnetii/gh-actions/def/dotnet-sdk@main
+        uses: thnetii/gh-actions/dotnet-sdk@main
         with:
           command: restore
           project: |
@@ -56,7 +56,7 @@ jobs:
           runtime: ${{ matrix['runtime.id'] }}
           msbuild-arguments: ${{ matrix['msbuild.arguments'] }}
       - name: dotnet build
-        uses: thnetii/gh-actions/def/dotnet-sdk@main
+        uses: thnetii/gh-actions/dotnet-sdk@main
         with:
           command: build
           project: |
