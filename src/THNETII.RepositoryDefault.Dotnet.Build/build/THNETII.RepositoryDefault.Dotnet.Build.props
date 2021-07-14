@@ -7,6 +7,9 @@
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <DebugType Condition=" '$(DebugType)' == '' ">portable</DebugType>
   </PropertyGroup>
+  <PropertyGroup>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+  </PropertyGroup>
 
   <PropertyGroup>
     <DirectoryMetaPropsFilePath>$([MSBuild]::GetDirectoryNameOfFileAbove('$(MSBuildProjectDirectory)', 'Directory.Meta.props'))\Directory.Meta.props</DirectoryMetaPropsFilePath>
