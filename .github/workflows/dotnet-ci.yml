@@ -71,7 +71,7 @@ jobs:
             -property:PackageOutputPath=${{ github.workspace }}/packages/bld
             ${{ matrix['msbuild.arguments'] }}
       - name: Upload Nuget artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ github.repository_owner }}-${{ github.event.repository.name }}-nupkg-${{ matrix.configuration }}${{ matrix['artifact.name.suffix'] }}
           path: packages/bld
