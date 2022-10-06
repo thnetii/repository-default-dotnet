@@ -45,7 +45,7 @@ jobs:
               </configuration>
     steps:
       - name: Chekout ${{ github.repository }}@${{ github.ref }}
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.1.0
       - name: 'Overwrite NuGet configuration'
         shell: pwsh
         run: |
@@ -84,7 +84,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Chekout ${{ github.repository }}@${{ github.ref }}
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.1.0
       - name: 'Overwrite NuGet configuration'
         shell: pwsh
         run: |
